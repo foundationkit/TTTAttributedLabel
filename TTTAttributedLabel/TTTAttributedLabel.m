@@ -73,6 +73,10 @@ static inline NSTextCheckingType NSTextCheckingTypeFromUIDataDetectorType(UIData
         textCheckingType |= NSTextCheckingTypePhoneNumber;
     }
 
+    if (dataDetectorType & TTTDataDetectorTypeMarkdownLink) {
+        textCheckingType |= TTTTextCheckingTypeMarkdownLink;
+    }
+
     return textCheckingType;
 }
 
@@ -353,7 +357,9 @@ static inline NSAttributedString * NSAttributedStringBySettingColorFromContext(N
     _dataDetectorTypes = dataDetectorTypes;
 
     if (self.dataDetectorTypes != UIDataDetectorTypeNone) {
-        self.dataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeFromUIDataDetectorType(self.dataDetectorTypes) error:nil];
+        if (self.dataDetectorTypes & (~TTTDataDetectorTypeMarkdownLink)) {
+            self.dataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeFromUIDataDetectorType(self.dataDetectorTypes) error:nil];
+        }
 
         if (self.dataDetectorTypes & TTTDataDetectorTypeMarkdownLink) {
             self.markdownLinkDataDetector = [TTTMarkdownLinkDataDetector dataDetectorWithTypes:TTTTextCheckingTypeMarkdownLink error:nil];

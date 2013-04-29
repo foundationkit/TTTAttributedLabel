@@ -5,6 +5,12 @@
       location = "group:TTTAttributedLabel"
       name = "TTTAttributedLabel">
       <FileRef
+         location = "group:TTTMarkdownLinkDataDetector.h">
+      </FileRef>
+      <FileRef
+         location = "group:TTTMarkdownLinkDataDetector.m">
+      </FileRef>
+      <FileRef
          location = "group:TTTAttributedLabel.h">
       </FileRef>
       <FileRef

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B660919172F0392004237AF /* TTTMarkdownLinkDataDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B660918172F0392004237AF /* TTTMarkdownLinkDataDetector.m */; };
 		F82DFABB16B837810095ECA8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F82DFABA16B837810095ECA8 /* Default-568h@2x.png */; };
 		F877A36113782AF10022A8AB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F877A36013782AF10022A8AB /* UIKit.framework */; };
 		F877A36313782AF10022A8AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F877A36213782AF10022A8AB /* Foundation.framework */; };
@@ -22,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9B660917172F0392004237AF /* TTTMarkdownLinkDataDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTMarkdownLinkDataDetector.h; sourceTree = "<group>"; };
+		9B660918172F0392004237AF /* TTTMarkdownLinkDataDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTMarkdownLinkDataDetector.m; sourceTree = "<group>"; };
 		F82DFABA16B837810095ECA8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F877A35C13782AF10022A8AB /* Espressos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Espressos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F877A36013782AF10022A8AB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -144,6 +147,8 @@
 		F8C05AC2165718E300B0ACDD /* TTTAttributedLabel */ = {
 			isa = PBXGroup;
 			children = (
+				9B660917172F0392004237AF /* TTTMarkdownLinkDataDetector.h */,
+				9B660918172F0392004237AF /* TTTMarkdownLinkDataDetector.m */,
 				F8C05AC3165718E300B0ACDD /* TTTAttributedLabel.h */,
 				F8C05AC4165718E300B0ACDD /* TTTAttributedLabel.m */,
 			);
@@ -220,6 +225,7 @@
 				F8C05AAD1657171400B0ACDD /* DetailViewController.m in Sources */,
 				F8C05AAE1657171400B0ACDD /* RootViewController.m in Sources */,
 				F8C05AC5165718E300B0ACDD /* TTTAttributedLabel.m in Sources */,
+				9B660919172F0392004237AF /* TTTMarkdownLinkDataDetector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

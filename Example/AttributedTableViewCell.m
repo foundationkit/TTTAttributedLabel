@@ -68,6 +68,7 @@ static inline NSRegularExpression * ParenthesisRegularExpression() {
     self.summaryLabel.textColor = [UIColor darkGrayColor];
     self.summaryLabel.lineBreakMode = UILineBreakModeWordWrap;
     self.summaryLabel.numberOfLines = 0;
+    self.summaryLabel.dataDetectorTypes = TTTDataDetectorTypeMarkdownLink;
     self.summaryLabel.linkAttributes = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:(NSString *)kCTUnderlineStyleAttributeName];
     
     NSMutableDictionary *mutableActiveLinkAttributes = [NSMutableDictionary dictionary];
