@@ -34,6 +34,17 @@ NSString * const kTTTBackgroundStrokeColorAttributeName = @"TTTBackgroundStrokeC
 NSString * const kTTTBackgroundLineWidthAttributeName = @"TTTBackgroundLineWidth";
 NSString * const kTTTBackgroundCornerRadiusAttributeName = @"TTTBackgroundCornerRadius";
 
+
+static TTTMarkdownLinkDataDetector *markdownLinkDataDetector = nil;
+static inline TTTMarkdownLinkDataDetector* TTTSharedMarkdownLinkDataDetector(void) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        markdownLinkDataDetector = [[TTTMarkdownLinkDataDetector alloc] initWithTypes:TTTTextCheckingTypeMarkdownLink error:nil];
+    });
+
+    return markdownLinkDataDetector;
+}
+
 static inline CTTextAlignment CTTextAlignmentFromUITextAlignment(UITextAlignment alignment) {
 	switch (alignment) {
 		case UITextAlignmentLeft: return kCTLeftTextAlignment;
@@ -200,7 +211,6 @@ static inline NSAttributedString * NSAttributedStringBySettingColorFromContext(N
 @property (readwrite, nonatomic, assign) CTFramesetterRef framesetter;
 @property (readwrite, nonatomic, assign) CTFramesetterRef highlightFramesetter;
 @property (readwrite, nonatomic, strong) NSDataDetector *dataDetector;
-@property (readwrite, nonatomic, strong) TTTMarkdownLinkDataDetector *markdownLinkDataDetector;
 @property (readwrite, nonatomic, strong) NSArray *links;
 @property (readwrite, nonatomic, strong) NSTextCheckingResult *activeLink;
 
@@ -235,7 +245,6 @@ static inline NSAttributedString * NSAttributedStringBySettingColorFromContext(N
 @synthesize delegate = _delegate;
 @synthesize dataDetectorTypes = _dataDetectorTypes;
 @synthesize dataDetector = _dataDetector;
-@synthesize markdownLinkDataDetector = _markdownLinkDataDetector;
 @synthesize links = _links;
 @synthesize linkAttributes = _linkAttributes;
 @synthesize activeLinkAttributes = _activeLinkAttributes;
@@ -359,10 +368,6 @@ static inline NSAttributedString * NSAttributedStringBySettingColorFromContext(N
     if (self.dataDetectorTypes != UIDataDetectorTypeNone) {
         if (self.dataDetectorTypes & (~TTTDataDetectorTypeMarkdownLink)) {
             self.dataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeFromUIDataDetectorType(self.dataDetectorTypes) error:nil];
-        }
-
-        if (self.dataDetectorTypes & TTTDataDetectorTypeMarkdownLink) {
-            self.markdownLinkDataDetector = [TTTMarkdownLinkDataDetector dataDetectorWithTypes:TTTTextCheckingTypeMarkdownLink error:nil];
         }
     } else {
         self.dataDetector = nil;
@@ -809,7 +814,7 @@ static inline NSAttributedString * NSAttributedStringBySettingColorFromContext(N
             }
 
             if (self.dataDetectorTypes & TTTDataDetectorTypeMarkdownLink) {
-                NSArray *markdownResults = [self.markdownLinkDataDetector matchesInString:[text string] options:0 range:NSMakeRange(0, [text length])];
+                NSArray *markdownResults = [TTTSharedMarkdownLinkDataDetector() matchesInString:[text string] options:0 range:NSMakeRange(0, [text length])];
                 if ([markdownResults count] > 0) {
                     NSMutableAttributedString *mutableAttributedString = [text mutableCopy];
                     NSMutableArray *replacementResults = [NSMutableArray arrayWithCapacity:markdownResults.count];
@@ -819,10 +824,10 @@ static inline NSAttributedString * NSAttributedStringBySettingColorFromContext(N
                         NSRange range = result.range;
                         range.location += offset;
 
-                        NSString *replacement = [self.markdownLinkDataDetector replacementStringForResult:result
-                                                                                                 inString:[mutableAttributedString string]
-                                                                                                   offset:offset
-                                                                                                 template:@"$1"];
+                        NSString *replacement = [TTTSharedMarkdownLinkDataDetector() replacementStringForResult:result
+                                                                                                       inString:[mutableAttributedString string]
+                                                                                                         offset:offset
+                                                                                                       template:@"$1"];
                         [mutableAttributedString replaceCharactersInRange:range withString:replacement];
 
                         NSRange rangeOfReplacement = NSMakeRange(range.location, replacement.length);
@@ -1202,7 +1207,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
     if ([coder containsValueForKey:@"highlightedShadowOffset"]) {
         self.highlightedShadowOffset = [coder decodeCGSizeForKey:@"highlightedShadowOffset"];
     }
-
+    
     if ([coder containsValueForKey:@"highlightedShadowColor"]) {
         self.highlightedShadowColor = [coder decodeObjectForKey:@"highlightedShadowColor"];
     }
