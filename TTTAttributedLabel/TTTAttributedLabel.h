@@ -22,6 +22,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
+#import "TTTMarkdownLinkDataDetector.h"
 
 /**
  Vertical alignment for text in a label whose bounds are larger than its text bounds
