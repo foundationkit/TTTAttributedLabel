@@ -822,7 +822,7 @@ static inline NSAttributedString * NSAttributedStringBySettingColorFromContext(N
                         NSString *replacement = [self.markdownLinkDataDetector replacementStringForResult:result
                                                                                                  inString:[mutableAttributedString string]
                                                                                                    offset:offset
-                                                                                                 template:nil];
+                                                                                                 template:@"$1"];
                         [mutableAttributedString replaceCharactersInRange:range withString:replacement];
 
                         NSRange rangeOfReplacement = NSMakeRange(range.location, replacement.length);

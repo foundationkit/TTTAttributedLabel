@@ -39,9 +39,6 @@ extern const NSTextCheckingTypes TTTTextCheckingTypeMarkdownLink;
 @property (readonly) NSString *ttt_linkTitle;
 @property (readonly) NSURL *ttt_URL;
 
-@property (readonly) NSRange ttt_linkTitleRange;
-@property (readonly) NSRange ttt_URLRange;
-
 @end
 
 

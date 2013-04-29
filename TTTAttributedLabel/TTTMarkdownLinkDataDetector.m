@@ -32,6 +32,7 @@ static NSString * const kTTTMarkdownLinkPattern = @"\\[(.*?)\\]\\((\\S+)(\\s(\"|
 static char linkTitleKey;
 static char linkURLKey;
 
+
 #pragma mark - NSTextCheckingResult (TTTMarkdownLink)
 
 @implementation NSTextCheckingResult (TTTMarkdownLink)
@@ -42,14 +43,6 @@ static char linkURLKey;
 
 - (NSURL *)ttt_URL {
     return objc_getAssociatedObject(self, &linkURLKey);
-}
-
-- (NSRange)ttt_linkTitleRange {
-    return [self rangeAtIndex:1];
-}
-
-- (NSRange)ttt_URLRange {
-    return [self rangeAtIndex:2];
 }
 
 @end
@@ -82,13 +75,13 @@ static char linkURLKey;
 
     [super enumerateMatchesInString:string options:options range:range usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
         if (result.numberOfRanges >= 3) {
-            NSRange titleRange = result.ttt_linkTitleRange;
-            NSRange URLRange = result.ttt_URLRange;
+            NSRange titleRange = [result rangeAtIndex:1];
+            NSRange URLRange = [result rangeAtIndex:2];
             NSString *linkTitle = [string substringWithRange:titleRange];
             NSURL *URL = [NSURL URLWithString:[string substringWithRange:URLRange]];
             
-            // update text checking result
-            // [result setValue:@(TTTTextCheckingTypeMarkdownLink) forKey:@"_resultType"];
+            // TODO: update text checking result
+            // [result setValue:@(TTTTextCheckingTypeMarkdownLink) forKey:@"resultType"];
             // [result setValue:[string substringWithRange:URLRange] forKey:@"URL"];
             objc_setAssociatedObject(result, &linkURLKey, URL, OBJC_ASSOCIATION_RETAIN);
             objc_setAssociatedObject(result, &linkTitleKey, linkTitle, OBJC_ASSOCIATION_COPY);
@@ -98,7 +91,12 @@ static char linkURLKey;
     }];
 }
 
-- (NSString *)replacementStringForResult:(NSTextCheckingResult *)result inString:(NSString *)string offset:(NSInteger)offset template:(NSString *)templ {
+- (NSString *)replacementStringForResult:(NSTextCheckingResult *)result inString:(NSString *)__unused string offset:(NSInteger) __unused offset template:(NSString *)templ {
+    // $2 means substitute with URL, everything else means substitute with link title (Markdown default)
+    if ([templ isEqualToString:@"$2"]) {
+        return [result.ttt_URL absoluteString];
+    }
+
     return result.ttt_linkTitle;
 }
 
