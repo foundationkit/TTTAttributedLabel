@@ -26,7 +26,7 @@
 
 
 const NSTextCheckingTypes TTTTextCheckingTypeMarkdownLink = 1ULL << 20;
-static NSString * const kTTTMarkdownLinkPattern = @"\\[(.*?)\\]\\((\\S+)(\\s(\"|').*?(\"|'))?\\)";
+static NSString * const kTTTMarkdownLinkPattern = @"\\[(.*?)\\]\\((\\S+)(\\s+(\"|\').*?(\"|\'))?\\)";
 
 
 static char linkTitleKey;
